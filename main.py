@@ -4,7 +4,6 @@ from TaxiAgent import TaxiSolver
 env = gym.make("Taxi-v3").env
 state = env.reset()
 env.render()
-print(list(env.decode(state)))
 taxi = TaxiSolver(env.desc, env.decode(state))
 
 done = False
