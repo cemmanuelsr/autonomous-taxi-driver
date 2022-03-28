@@ -1,4 +1,5 @@
 from Graph import State
+from algorithms import BuscaGananciosa
 from utils import *
 
 class TaxiAgent(State):
@@ -16,9 +17,9 @@ class TaxiAgent(State):
         if(pass_idx == 4):
             pass_row, pass_col = taxi_row, taxi_col
         else:
-            pass_row, pass_row = find_row_col(desc, pass_idx)
+            pass_row, pass_col = find_row_col(desc, pass_idx)
         
-        self.passenger = Passenger(row=pass_row, col=pass_col, idx=dest_idx)
+        self.passenger = Passenger(row=pass_row, col=pass_col, idx=pass_idx)
 
         dest_row, dest_col = find_row_col(desc, dest_idx)
         self.destiny = Destiny(row=dest_row, col=dest_col, idx=dest_idx)
@@ -37,16 +38,17 @@ class TaxiAgent(State):
                 sucessors.append( TaxiAgent(self.desc, decode, operator=4) )
                 return sucessors
 
-        for move, operator in MOVE_ACTION_MAP:
-            row_offset, col_offset = move
-            if (operator in [0, 1]):
-                if (self.desc[self.taxi.row + row_offset][self.taxi.col] != b'-'):
-                    decode = (self.taxi.row + row_offset, self.taxi.col, self.passenger.idx, self.destiny.idx)
-                    sucessors.append( TaxiAgent(self.desc, decode, operator=operator) )
-            if(operator in [2, 3]):
-                if(self.desc[self.taxi.row][self.taxi.col + col_offset // 2] != b'|'):
-                    decode = (self.taxi.row, self.taxi.col + col_offset, self.passenger.idx, self.destiny.idx)
-                    sucessors.append( TaxiAgent(self.desc, decode, operator=operator) )
+        for move, operator in MOVE_ACTION_MAP.items():
+            if(operator != FORBIDDEN_OPERATION[self.operator]):
+                row_offset, col_offset = move
+                if (operator in [0, 1] and 0 <= self.taxi.row + row_offset <= 4):
+                    if (self.desc[self.taxi.row + row_offset][self.taxi.col] != b'-'):
+                        decode = (self.taxi.row + row_offset, self.taxi.col, self.passenger.idx, self.destiny.idx)
+                        sucessors.append( TaxiAgent(self.desc, decode, operator=operator) )
+                if(operator in [2, 3] and 0 <= self.taxi.col + col_offset <= 4):
+                    if(self.desc[self.taxi.row][self.taxi.col + col_offset // 2] != b'|'):
+                        decode = (self.taxi.row, self.taxi.col + col_offset, self.passenger.idx, self.destiny.idx)
+                        sucessors.append( TaxiAgent(self.desc, decode, operator=operator) )
 
         return sucessors
     
@@ -63,10 +65,21 @@ class TaxiAgent(State):
         if(self.passenger_on_taxi):
             return euclidian_distance(self.taxi, self.destiny)
         else:
-            return manhattan_distance(self.taxi, self.passenger)
+            return euclidian_distance(self.taxi, self.passenger)
 
     def print(self):
         return self.desc
     
     def env(self):
         return (self.desc, self.taxi.row, self.taxi.col, self.passenger.idx, self.destiny.idx)
+
+
+class TaxiSolver:
+
+    def __init__(self, desc, decode):
+        self.agent = TaxiAgent(desc, decode)
+
+    def path(self, algorithm=BuscaGananciosa()):    
+        result = algorithm.search(self.agent)
+        return result.path()
+

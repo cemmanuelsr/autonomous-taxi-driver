@@ -11,6 +11,16 @@ MOVE_ACTION_MAP = {
               (-1, 0): 0
 }
 
+FORBIDDEN_OPERATION = {
+    -1: -1,
+    0: 1,
+    1: 0,
+    2: 3,
+    3: 2,
+    4: 4,
+    5: 5
+}
+
 def find_row_col(desc, code):
     letter = CODE_TO_LETTER_MAP[code]
     for row in range(1, len(desc)-1):
