@@ -46,7 +46,7 @@ class TaxiAgent(State):
                         decode = (self.taxi.row + row_offset, self.taxi.col, self.passenger.idx, self.destiny.idx)
                         sucessors.append( TaxiAgent(self.desc, decode, operator=operator) )
                 if(operator in [2, 3] and 0 <= self.taxi.col + col_offset <= 4):
-                    if(self.desc[self.taxi.row][self.taxi.col + col_offset // 2] != b'|'):
+                    if(self.desc[self.taxi.row][self.taxi.col + col_offset] != b'|'):
                         decode = (self.taxi.row, self.taxi.col + col_offset, self.passenger.idx, self.destiny.idx)
                         sucessors.append( TaxiAgent(self.desc, decode, operator=operator) )
 
