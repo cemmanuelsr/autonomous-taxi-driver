@@ -1,5 +1,5 @@
 from Graph import State
-from algorithms import BuscaGananciosa
+from algorithms import AEstrela, BuscaGananciosa
 from utils import *
 
 class TaxiAgent(State):
@@ -42,13 +42,11 @@ class TaxiAgent(State):
             if(operator != FORBIDDEN_OPERATION[self.operator]):
                 row_offset, col_offset = move
                 if (operator in [0, 1] and 0 <= self.taxi.row + row_offset <= 4):
-                    if (self.desc[self.taxi.row + row_offset][self.taxi.col] != b'-'):
-                        decode = (self.taxi.row + row_offset, self.taxi.col, self.passenger.idx, self.destiny.idx)
-                        sucessors.append( TaxiAgent(self.desc, decode, operator=operator) )
+                    decode = (self.taxi.row + row_offset, self.taxi.col, self.passenger.idx, self.destiny.idx)
+                    sucessors.append( TaxiAgent(self.desc, decode, operator=operator) )
                 if(operator in [2, 3] and 0 <= self.taxi.col + col_offset <= 4):
-                    if(self.desc[self.taxi.row][self.taxi.col + col_offset] != b'|'):
-                        decode = (self.taxi.row, self.taxi.col + col_offset, self.passenger.idx, self.destiny.idx)
-                        sucessors.append( TaxiAgent(self.desc, decode, operator=operator) )
+                    decode = (self.taxi.row, self.taxi.col + col_offset, self.passenger.idx, self.destiny.idx)
+                    sucessors.append( TaxiAgent(self.desc, decode, operator=operator) )
 
         return sucessors
     
@@ -79,7 +77,7 @@ class TaxiSolver:
     def __init__(self, desc, decode):
         self.agent = TaxiAgent(desc, decode)
 
-    def path(self, algorithm=BuscaGananciosa()):    
+    def path(self, algorithm=AEstrela()):    
         result = algorithm.search(self.agent)
         return result.path()
 

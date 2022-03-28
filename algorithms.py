@@ -17,7 +17,7 @@ class BuscaGananciosa (SearchAlgorithm):
             open.sort(key = sortFunction, reverse = True)
             n = open.pop()[0]
             print('-----------------------')
-            print(n.state.taxi.row, n.state.taxi.col, n.state.operator, n.state.h())
+            print(n.state.taxi.row, n.state.taxi.col, n.state.operator, n.state.passenger_on_taxi, n.state.h())
             if (n.state.is_goal()):
                 return n
             for i in n.state.sucessors():
