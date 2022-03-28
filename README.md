@@ -46,3 +46,12 @@ A primeira é podar a árvore de possibilidades e isso pode ser feito de três m
 - Do contrário, criar sucessores para os movimentos possíveis e por possível significa que o taxi não esbarra em um obstáculo e nem reproduz um movimento que o faça voltar a configuração anterior.
 
 A segunda estratégia é utilizar uma heurística forte, com menos repetição, no caso a distância euclidiana e utilizar o algoritmo A*, já que esse leva em consideração o custo que pode ser visto como o número de passos do taxi. Isso é útil para evitar que ele ache um ponto de heurística baixa e fique circulando em volta desse.
+
+## Testes
+
+Para realizar os testes basta executar
+
+```
+> pytest tests.py --capture=tee-sys
+============= 5 passed in 0.38s =============
+```
