@@ -59,6 +59,12 @@ class TaxiAgent(State):
     def cost(self):
         return 1
 
+    def h(self):
+        if(self.passenger_on_taxi):
+            return euclidian_distance(self.taxi, self.destiny)
+        else:
+            return manhattan_distance(self.taxi, self.passenger)
+
     def print(self):
         return self.desc
     

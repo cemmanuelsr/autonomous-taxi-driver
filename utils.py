@@ -41,3 +41,9 @@ class Destiny(Entity):
         self.idx = idx
         super(Destiny, self).__init__(row, col, name='Destiny')
 
+
+def euclidian_distance(entity1, entity2):
+    return ( (entity1.row - entity2.row)**2 + (entity1.col - entity2.col)**2 )**0.5
+
+def manhattan_distance(entity1, entity2):
+    return abs(entity1.row - entity2.row) + abs(entity1.col - entity2.col)
